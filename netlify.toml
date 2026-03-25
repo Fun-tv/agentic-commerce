@@ -12,7 +12,7 @@
 # e.g.  BACKEND_URL = https://haat-backend.onrender.com
 [[redirects]]
   from   = "/api/*"
-  to     = "https://haat-backend.onrender.com/api/:splat"
+  to     = "https://agentic-commerce-backend-29f2.onrender.com/api/:splat"
   status = 200
   force  = true
 
