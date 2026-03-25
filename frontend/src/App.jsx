@@ -10,6 +10,7 @@ import { AuthProvider }    from './contexts/AuthContext'
 import { CartProvider }    from './contexts/CartContext'
 import { ToastProvider }   from './contexts/ToastContext'
 import { LoadingProvider } from './contexts/LoadingContext'
+import { ThemeProvider }   from './contexts/ThemeContext'
 import Nav        from './components/Nav'
 import Footer     from './components/Footer'
 import LoadingBar from './components/LoadingBar'
@@ -29,6 +30,7 @@ import OnboardingPage from './pages/OnboardingPage'
 import ChatPage       from './pages/ChatPage'
 import PrivacyPage    from './pages/PrivacyPage'
 import TermsPage      from './pages/TermsPage'
+import SettingsPage   from './pages/SettingsPage'
 
 // Pages that hide Nav / Footer / BottomNav
 const HIDE_CHROME_ON = ['/checkout', '/confirmed', '/login', '/signup', '/onboarding', '/chat']
@@ -70,6 +72,7 @@ function AppShell() {
           <Route path="/chat"        element={<ChatPage />} />
           <Route path="/privacy"     element={<PrivacyPage />} />
           <Route path="/terms"       element={<TermsPage />} />
+          <Route path="/settings"    element={<SettingsPage />} />
           <Route path="*"            element={<NotFoundPage />} />
         </Routes>
         {!hideChrome && <Footer />}
@@ -82,14 +85,16 @@ function AppShell() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <LoadingProvider>
-        <CartProvider>
-          <ToastProvider>
-            <AppShell />
-          </ToastProvider>
-        </CartProvider>
-      </LoadingProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <LoadingProvider>
+          <CartProvider>
+            <ToastProvider>
+              <AppShell />
+            </ToastProvider>
+          </CartProvider>
+        </LoadingProvider>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }

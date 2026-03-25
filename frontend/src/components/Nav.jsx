@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useCart } from '../contexts/CartContext'
 import { useAuth } from '../contexts/AuthContext'
+import { useTheme } from '../contexts/ThemeContext'
 
 const NAV_LINKS = [
   { label: 'Markets',  path: '/markets' },
@@ -21,6 +22,7 @@ function useScrollY() {
 export default function Nav() {
   const { count } = useCart()
   const { user, logout } = useAuth()
+  const { theme, setTheme } = useTheme()
   const location   = useLocation()
   const navigate   = useNavigate()
   const scrollY    = useScrollY()
@@ -79,6 +81,38 @@ export default function Nav() {
     setSearchOpen(false)
     navigate(`/search?q=${encodeURIComponent(query.trim())}`)
     setQuery('')
+  }
+
+  function cycleTheme() {
+    const order = ['dark', 'light', 'system']
+    const next = order[(order.indexOf(theme) + 1) % order.length]
+    setTheme(next)
+  }
+
+  // Icon shown in nav button reflects the NEXT state (so user knows what clicking will do)
+  function ThemeIcon() {
+    if (theme === 'dark') return (
+      // Sun — click to go light
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="4"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+      </svg>
+    )
+    if (theme === 'light') return (
+      // Moon — click to go system
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    )
+    // System — click to go dark
+    return (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+      </svg>
+    )
   }
 
   return (
@@ -186,6 +220,30 @@ export default function Nav() {
 
         {/* ── RIGHT: Icons + CTA ───────────────────── */}
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Theme toggle */}
+          <button
+            onClick={cycleTheme}
+            aria-label={`Switch theme (current: ${theme})`}
+            title={`Theme: ${theme} — click to cycle`}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              padding: '8px', borderRadius: '8px',
+              color: 'var(--text-secondary)',
+              display: 'flex', alignItems: 'center',
+              transition: 'color 0.15s ease, background 0.15s ease',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = 'var(--text-primary)'
+              e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = 'var(--text-secondary)'
+              e.currentTarget.style.background = 'none'
+            }}
+          >
+            <ThemeIcon />
+          </button>
+
           {/* Search icon */}
           <button
             onClick={() => setSearchOpen(true)}
@@ -355,12 +413,12 @@ export default function Nav() {
                       💬  Chat with haat
                     </button>
                     <button
-                      onClick={() => { setAvatarOpen(false); navigate('/onboarding') }}
+                      onClick={() => { setAvatarOpen(false); navigate('/settings') }}
                       style={dropItemStyle}
                       onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'}
                       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                     >
-                      ✦  Preferences
+                      ✦  Settings
                     </button>
                     <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', margin: '4px 0' }} />
                     <button

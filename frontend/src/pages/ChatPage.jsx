@@ -6,7 +6,10 @@ import { useVoiceRecorder } from '../hooks/useVoiceRecorder'
 import { useTTS } from '../hooks/useTTS'
 
 // ── Constants ──────────────────────────────────────────────────────────────────
-const SESSION_KEY = 'haat_session_id'
+const SESSION_KEY   = 'haat_session_id'
+const HISTORY_KEY   = 'haat_chat_messages'
+const SAVE_HIST_KEY = 'haat_save_history'
+const VOICE_EN_KEY  = 'haat_voice_enabled'
 
 const EXAMPLE_PROMPTS = [
   'Diwali gift hamper for my parents under ₹2,000',
@@ -686,7 +689,15 @@ export default function ChatPage() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const [messages,   setMessages]   = useState([])
+  const [messages,   setMessages]   = useState(() => {
+    try {
+      if (localStorage.getItem(SAVE_HIST_KEY) === 'true') {
+        const saved = localStorage.getItem(HISTORY_KEY)
+        return saved ? JSON.parse(saved) : []
+      }
+    } catch {}
+    return []
+  })
   const [loading,    setLoading]    = useState(false)
   const [status,     setStatus]     = useState('Thinking…')
   const [sessionId,  setSessionId]  = useState(() => getSessionId())
@@ -694,9 +705,11 @@ export default function ChatPage() {
   const [voiceMode,  setVoiceMode]  = useState(false)
   const [voiceError, setVoiceError] = useState(null)
 
-  // Default voice: Aarav (Indian male). Swap to 'EXAVITQu4vr4xnSDxMaL' for Priya.
-  const VOICE_ID = 'pNInz6obpgDQGcFmaJgB'
-  const { speak, stop: stopSpeech, speaking } = useTTS({ voiceId: VOICE_ID })
+  // Voice — reads IDs and enabled flag set in Settings
+  const activeVoiceId = (() => { try { return localStorage.getItem('haat_voice') || 'pNInz6obpgDQGcFmaJgB' } catch { return 'pNInz6obpgDQGcFmaJgB' } })()
+  const ttsEnabled    = (() => { try { return localStorage.getItem(VOICE_EN_KEY) !== 'false' } catch { return true } })()
+  const { speak: _speak, stop: stopSpeech, speaking } = useTTS({ voiceId: activeVoiceId })
+  const speak = ttsEnabled ? _speak : () => {}
 
   const messagesEndRef = useRef(null)
   const hasMessages = messages.length > 0
@@ -705,6 +718,15 @@ export default function ChatPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, loading])
+
+  // Persist messages to localStorage when save-history is enabled
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(SAVE_HIST_KEY) === 'true') {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(messages))
+      }
+    } catch {}
+  }, [messages])
 
   // Fire ?q= URL param as the first message once auth is ready
   useEffect(() => {
