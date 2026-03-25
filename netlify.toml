@@ -1,0 +1,21 @@
+[build]
+  base    = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA fallback — all routes handled by React Router
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# Proxy /api calls to Render backend (set VITE_API_URL in Netlify env vars instead)
+# Kept as reference — not active unless you want server-side proxying
+# [[redirects]]
+#   from   = "/api/*"
+#   to     = "https://haat-backend.onrender.com/api/:splat"
+#   status = 200
+#   force  = true
