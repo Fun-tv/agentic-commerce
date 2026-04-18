@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import { searchProducts } from '../lib/api'
-import { useReveal } from '../hooks/useReveal'
 import './HomePage.css'
 
 const PROMPTS = [
@@ -21,34 +20,33 @@ const STATS = [
 ]
 
 const CATEGORIES = [
-  { slug: 'sweets', label: 'Sweets', image: 'https://source.unsplash.com/900x1200/?indian,sweets,mithai&sig=101' },
-  { slug: 'sarees', label: 'Sarees', image: 'https://source.unsplash.com/900x1200/?kanjivaram,saree,indian&sig=102' },
-  { slug: 'spices', label: 'Spices', image: 'https://source.unsplash.com/900x1200/?indian,spices,masala&sig=103' },
-  { slug: 'handicrafts', label: 'Handicrafts', image: 'https://source.unsplash.com/900x1200/?indian,handicraft,artisan&sig=104' },
+  { slug: 'sweets', label: 'Sweets', image: 'https://media.istockphoto.com/id/1054228718/photo/indian-sweets-in-a-plate-includes-gulab-jamun-rasgulla-kaju-katli-morichoor-bundi-laddu.jpg?s=1024x1024&w=is&k=20&c=zuHus6q049UchR1NkljCmCehsB-Ty8k_k_oO8J08y0E=' },
+  { slug: 'sarees', label: 'Sarees', image: 'https://images.unsplash.com/photo-1727430228383-aa1fb59db8bf?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+  { slug: 'spices', label: 'Spices', image: 'https://plus.unsplash.com/premium_photo-1692776206795-60a58a4dc817?q=80&w=1028&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+  { slug: 'handicrafts', label: 'Handicrafts', image: 'https://media.istockphoto.com/id/1364905810/photo/traditional-indian-colourful-tea-pots-on-display-at-a-store.jpg?s=1024x1024&w=is&k=20&c=31_krqZsbgRVArip8k_P0nkYqug_5M2WxoVu9i4TYls=' },
 ]
 
 function fallbackPhoto(seed, width = 900, height = 1200) {
   return `https://picsum.photos/seed/${encodeURIComponent(seed)}/${width}/${height}`
 }
 
-function StatCard({ stat, i }) {
+function StatCard({ stat }) {
   return (
-    <article className="flow-home-stat reveal-child fx-soft-card" style={{ transitionDelay: `${i * 70}ms` }}>
+    <article className="flow-home-stat fx-soft-card">
       <p className="flow-home-stat-value">{stat.value}</p>
       <p className="flow-home-stat-label">{stat.label}</p>
     </article>
   )
 }
 
-function CategoryCard({ item, i, onOpen }) {
+function CategoryCard({ item, onOpen }) {
   const backup = fallbackPhoto(`home-cat-${item.slug}`)
   const [src, setSrc] = useState(item.image)
 
   return (
     <button
       type="button"
-      className="flow-home-category reveal-child fx-soft-card"
-      style={{ transitionDelay: `${i * 70}ms` }}
+      className="flow-home-category fx-soft-card"
       onClick={() => onOpen(item.slug)}
       aria-label={`Browse ${item.label}`}
     >
@@ -88,12 +86,6 @@ export default function HomePage() {
   const [featured, setFeatured] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const heroRef = useReveal(0.08)
-  const statsRef = useReveal(0.15)
-  const categoriesRef = useReveal(0.12)
-  const featuredRef = useReveal(0.1)
-  const finalCtaRef = useReveal(0.1)
-
   useEffect(() => {
     searchProducts('featured Indian products', null)
       .then(data => setFeatured((data.products ?? []).slice(0, 8)))
@@ -111,7 +103,7 @@ export default function HomePage() {
         </p>
       </div>
 
-      <section ref={heroRef} className="flow-home-hero">
+      <section className="flow-home-hero">
         <div className="flow-home-orb flow-home-orb-a" aria-hidden="true" />
         <div className="flow-home-orb flow-home-orb-b" aria-hidden="true" />
 
@@ -129,22 +121,22 @@ export default function HomePage() {
         </div>
 
         <div className="flow-home-hero-inner">
-          <p className="flow-home-pill reveal-child">
+          <p className="flow-home-pill">
             <span className="flow-home-pill-dot" />
             {' '}
             AI shopping assistant
           </p>
 
-          <h1 className="flow-home-title reveal-child">
+          <h1 className="flow-home-title">
             <span className="flow-home-title-soft">Do not search,</span>{' '}
             <span className="flow-home-title-strong">just speak</span>
           </h1>
 
-          <p className="flow-home-subtitle reveal-child">
+          <p className="flow-home-subtitle">
             The voice-to-text shopping AI that turns your request into clear, trustworthy Indian product picks in every app.
           </p>
 
-          <div className="flow-home-cta reveal-child">
+          <div className="flow-home-cta">
             <Link to="/chat" className="flow-home-btn flow-home-btn-primary fx-glow-button">
               Start with haat AI
             </Link>
@@ -153,9 +145,9 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <p className="flow-home-availability reveal-child">Available for families across Mac, Windows, iPhone, and Android workflows</p>
+          <p className="flow-home-availability">Available for families across Mac, Windows, iPhone, and Android workflows</p>
 
-          <div className="flow-home-prompt-list reveal-child">
+          <div className="flow-home-prompt-list">
             {PROMPTS.map(prompt => (
               <button
                 key={prompt}
@@ -169,7 +161,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section ref={statsRef} className="flow-home-stats-wrap">
+      <section className="flow-home-stats-wrap">
         <div className="flow-home-stats-grid">
           {STATS.map((stat, i) => (
             <StatCard key={stat.label} stat={stat} i={i} />
@@ -177,8 +169,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section ref={categoriesRef} className="flow-home-categories-wrap">
-        <div className="flow-home-section-head reveal-child">
+      <section className="flow-home-categories-wrap">
+        <div className="flow-home-section-head">
           <p>Shop by category</p>
           <h2>Everything India makes.</h2>
         </div>
@@ -190,8 +182,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section ref={featuredRef} className="flow-home-featured-wrap">
-        <div className="flow-home-section-head reveal-child">
+      <section className="flow-home-featured-wrap">
+        <div className="flow-home-section-head">
           <p>Featured now</p>
           <h2>Picked by AI, loved by families.</h2>
         </div>
@@ -200,15 +192,13 @@ export default function HomePage() {
           {loading
             ? Array.from({ length: 8 }, (_, i) => <SkeletonCard key={i} />)
             : featured.map((product, index) => (
-                <div key={product.id} className="reveal-child" style={{ transitionDelay: `${index * 60}ms` }}>
-                  <ProductCard product={product} index={index} />
-                </div>
-              ))}
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
         </div>
       </section>
 
-      <section ref={finalCtaRef} className="flow-home-final-cta-wrap">
-        <div className="flow-home-final-cta reveal-child fx-soft-card">
+      <section className="flow-home-final-cta-wrap">
+        <div className="flow-home-final-cta fx-soft-card">
           <h2>Bring home closer in one prompt.</h2>
           <p>Tell haat what you need, in your own words. We will do the market work for you.</p>
           <Link to="/chat" className="flow-home-btn flow-home-btn-primary fx-glow-button">

@@ -315,23 +315,8 @@ input, textarea, select { font-family: inherit; }
   animation: pageExit 150ms ease-in forwards;
 }
 
-/* ────────────────────────────────────────────────────────
-   SCROLL REVEAL
-   ──────────────────────────────────────────────────────── */
-.reveal-child {
-  opacity: 0;
-  transform: translateY(24px);
-  filter: blur(6px);
-  transition:
-    opacity  500ms var(--ease-out),
-    transform 500ms var(--ease-out),
-    filter 500ms var(--ease-out);
-}
-.reveal-child.visible {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
+
+
 
 /* ────────────────────────────────────────────────────────
    WISHLIST HEART ANIMATIONS

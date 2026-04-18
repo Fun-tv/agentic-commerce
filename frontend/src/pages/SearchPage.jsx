@@ -884,11 +884,13 @@ export default function SearchPage() {
               </div>
 
               {/* Product grid */}
-              <div style={{
-                display:             'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                gap:                 '16px',
-              }}>
+              <div
+                style={{
+                  display:             'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                  gap:                 '16px',
+                }}
+              >
                 {displayProducts.map((p, i) => (
                   <ProductCard
                     key={p.id}
