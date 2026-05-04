@@ -23,7 +23,7 @@ const CATEGORIES = [
   { slug: 'sweets', label: 'Sweets', image: 'https://media.istockphoto.com/id/1054228718/photo/indian-sweets-in-a-plate-includes-gulab-jamun-rasgulla-kaju-katli-morichoor-bundi-laddu.jpg?s=1024x1024&w=is&k=20&c=zuHus6q049UchR1NkljCmCehsB-Ty8k_k_oO8J08y0E=' },
   { slug: 'sarees', label: 'Sarees', image: 'https://images.unsplash.com/photo-1727430228383-aa1fb59db8bf?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
   { slug: 'spices', label: 'Spices', image: 'https://plus.unsplash.com/premium_photo-1692776206795-60a58a4dc817?q=80&w=1028&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { slug: 'handicrafts', label: 'Handicrafts', image: 'https://media.istockphoto.com/id/1364905810/photo/traditional-indian-colourful-tea-pots-on-display-at-a-store.jpg?s=1024x1024&w=is&k=20&c=31_krqZsbgRVArip8k_P0nkYqug_5M2WxoVu9i4TYls=' },
+  { slug: 'handicrafts', label: 'Handicrafts', image: 'https://images.unsplash.com/photo-1755452540290-74f52106e4f5?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
 ]
 
 function fallbackPhoto(seed, width = 900, height = 1200) {
